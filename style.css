@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css?family=Sacramento|Quicksand');
+
+#logo {
+    height: 45px;
+    width: 55px;
+}
+
+nav {
+    border-bottom: 1px solid #a5ebce;
+}
+
+.navbar-brand {
+    font-size: 2rem;
+    font-family: 'Sacramento', cursive;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+#logotext {
+    color: #a5ebce;
+    position: relative;
+    top: 5px;
+    margin-left: 1rem;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.6);
+}
+
+.nav-item {
+    font-family: 'Quicksand', sans-serif;
+    color: #111111;
+    font-weight: bold;
+}
+
+
+.nav-link:hover {
+    color: #a5ebce !important;
+}
+
+#contact-us {
+    margin-top: 10rem;
+}
+
+.hide {
+    display: none;
+}
+
+.g-signin2 {
+    width: 100%;
+}
+
+.g-signin2 > div {
+    margin: 0 auto;
+}
+
+#signinup {
+    margin-top: 10rem;
+}
+
+.other-auth {
+    margin-top: 2rem;
+}

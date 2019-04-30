@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
+  <link type="text/css" rel="stylesheet" href="style.css" />
+  <title>Contact Us</title>
+</head>
+
+<body>
+
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+      <a class="navbar-brand" href="#"><img id="logo" src="logo.png"></img><span id="logotext">Cache Cow</span></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav ml-auto">
+          <a class="nav-item nav-link" href="signin.html">Home</a>
+          <a class="nav-item nav-link active" href="#">Contact Us <span class="sr-only">(current)</span></a>
+        </div>
+      </div>
+    </nav>
+    <div class="container" id="contact-us">
+
+      <h1>Contact Us</h1>
+      <form id="contact-form" method="post">
+        <div class="form-group">
+          <label for="exampleFormControlInput1">Email Address</label>
+          <input type="email" class="form-control" name="email" placeholder="name@example.com" required>
+        </div>
+        <div class="form-group">
+          <label for="exampleFormControlInput1">First Name</label>
+          <input type="text" class="form-control" name="first_name" placeholder="Your first name here" required>
+        </div>
+        <div class="form-group">
+          <label for="exampleFormControlInput1">Last Name</label>
+          <input type="text" class="form-control" name="last_name" placeholder="Your last name here" required>
+        </div>
+        <div class="form-group">
+          <label for="exampleFormControlTextarea1">Message</label>
+          <textarea class="form-control" name="message" rows="3" required></textarea>
+        </div>
+        <div class="form-group">
+          <button class="btn btn-primary" type="submit">Submit</button>
+        </div>
+      </form>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/5.10.1/firebase.js"></script>
+    <script>
+      var user;
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyBOTAPzh3loiCEYirwSO08-WxTKZTX_5IQ",
+        authDomain: "cache-cow.firebaseapp.com",
+        databaseURL: "https://cache-cow.firebaseio.com",
+        projectId: "cache-cow",
+        storageBucket: "cache-cow.appspot.com",
+        messagingSenderId: "538579668620"
+      };
+
+      firebase.initializeApp(config);
+      var db = firebase.firestore();
+
+      $(document).on('submit', '#contact-form', function (event) {
+        event.preventDefault();
+
+        // Add a new document in collection "users"
+        db.collection("contacts").doc().set({
+            email: $(this).find('input[name=email]').val(),
+            first_name: $(this).find('input[name=first_name]').val(),
+            last_name: $(this).find('input[name=last_name]').val(),
+            message: $(this).find('textarea[name=message]').val()
+          })
+          .then(function () {
+            console.log("Document successfully written!");
+          })
+          .catch(function (error) {
+            console.error("Error writing document: ", error);
+          });
+      });
+
+      // Get a single document by ID
+      var docRef = db.collection("contacts").doc("TNe2Xz8eLk7k6tH2LTEY");
+
+      docRef.get().then(function (doc) {
+        if (doc.exists) {
+          console.log("Document data:", doc.data());
+        } else {
+          // doc.data() will be undefined in this case
+          console.log("No such document!");
+        }
+      }).catch(function (error) {
+        console.log("Error getting document:", error);
+      });
+
+      // Get all documents from collection
+      db.collection("contacts").get().then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          // doc.data() is never undefined for query doc snapshots
+          console.log(doc.id, " => ", doc.data());
+        });
+      });
+
+      // Using references via querySnapshot to get a particular record with a particular field parameter.
+      var contactRef = db.collection("contacts");
+      contactRef.where('email', '==', 'gtvlasak@gmail.com');
+      contactRef.get().then(function (querySnapshot) {
+        if (querySnapshot.size > 0) {
+          console.log(querySnapshot.docs[0].data());
+        } else {
+          console.log('No records found.');
+        }
+      });
+
+      var auth = firebase.auth();
+
+      $(document).on('submit', '#form-signup', function (event) {
+        event.preventDefault();
+        var promise = auth.createUserWithEmailAndPassword($('#signup_email').val(), $(
+            '#signup_password')
+          .val());
+        promise.catch(e => console.log(e.message));
+      });
+
+      $(document).on('submit', '#form-signin', function (event) {
+        event.preventDefault();
+        var promise = auth.signInWithEmailAndPassword($('#signin_email').val(), $(
+            '#signin_password')
+          .val());
+        promise.catch(e => {
+          console.log(e.message);
+          $('#alert-signin').text(e.message);
+          $('#alert-signin').show();
+        });
+      });
+
+      $(document).on('click', '#signout', function (event) {
+        event.preventDefault();
+        var promise = auth.signOut();
+        promise.catch(e => console.log(e.message));
+      });
+
+      auth.onAuthStateChanged(firebaseUser => {
+        if (firebaseUser) {
+          console.log(firebaseUser);
+          user = firebaseUser;
+        } else if (provider) {
+          var provider = new firebase.auth.FacebookAuthProvider();
+
+        } else {
+          window.location = 'signin.html';
+
+        }
+      });
+    </script>
+    
+  </body>
+
+</html>
+
+<!-- service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write;
+    }
+  }
+}-->
